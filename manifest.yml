@@ -1,0 +1,18 @@
+# manifest.yml
+# Diese Datei dient NUR als Referenz/Vorlage. Du brauchst sie nicht hochzuladen –
+# im Miro Developer Portal trägst du diese Werte direkt in der UI ein.
+# (Siehe Schritt-für-Schritt-Anleitung)
+
+appName: "WBS Builder"
+sdkVersion: "2.0"
+
+# Diese URL muss auf deine app.html zeigen.
+# Beim lokalen Testen z.B.: http://localhost:3000/app.html
+# Später (öffentlich gehostet via GitHub Pages):
+#   https://<dein-github-username>.github.io/<repo-name>/app.html
+appUrl: "http://localhost:3000/app.html"
+
+# Berechtigungen (Scopes), die die App im Developer Portal anfragen muss:
+scopes:
+  - boards:read
+  - boards:write

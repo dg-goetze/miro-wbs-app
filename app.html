@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WBS Builder</title>
+  <script src="https://miro.com/app/static/sdk/v2/miro.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="app-header">
+      <h1>WBS Builder</h1>
+      <div class="header-actions">
+        <button id="importBtn" class="btn btn-secondary">Import aus Text-Widget</button>
+        <button id="syncBtn" class="btn btn-primary">Sync → Board</button>
+        <button id="autoLayoutBtn" class="btn btn-secondary">Auto-Layout</button>
+      </div>
+    </header>
+
+    <div class="main-layout">
+      <!-- LINKE SEITE: Hierarchische Liste -->
+      <section class="list-panel">
+        <div class="panel-header">
+          <h2>Gliederung</h2>
+          <button id="addRootBtn" class="btn btn-small">+ Wurzel</button>
+        </div>
+        <div id="treeContainer" class="tree-container"></div>
+      </section>
+
+      <!-- RECHTE SEITE: Status / Mapping-Info -->
+      <section class="status-panel">
+        <div class="panel-header">
+          <h2>Board-Status</h2>
+        </div>
+        <div id="statusContainer" class="status-container">
+          <p class="hint">Hier siehst du, welche Knoten bereits auf dem Board existieren,
+          welche neu angelegt und welche entfernt werden, sobald du auf
+          <strong>"Sync → Board"</strong> klickst.</p>
+          <div id="diffSummary"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

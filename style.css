@@ -1,0 +1,389 @@
+:root {
+  --color-bg: #f7f8fa;
+  --color-border: #e0e3e8;
+  --color-primary: #4262ff;
+  --color-text: #1a1a1a;
+  --color-muted: #6b7280;
+
+  /* Level-Farben analog zum Referenzbild */
+  --level-0: #f25c54; /* Wurzel - rot/orange */
+  --level-1: #7c3aed; /* Phase - lila */
+  --level-2: #2563eb; /* Arbeitspaket - blau */
+  --level-3: #16a34a; /* Activity - grün */
+  --level-4: #f59e0b; /* weitere Ebene - orange */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-size: 13px;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-border);
+  background: white;
+}
+
+body.modal-mode .app-header {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header h1 {
+  font-size: 13px;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-secondary {
+  background: #eef0ff;
+  color: var(--color-primary);
+}
+
+.btn-small {
+  background: #eef0ff;
+  color: var(--color-primary);
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+.settings-bar {
+  display: flex;
+  gap: 14px;
+  padding: 6px 10px;
+  background: #f3f4f8;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+
+.settings-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--color-muted);
+}
+
+.settings-input {
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  padding: 3px 5px;
+  font-size: 11px;
+  background: white;
+  color: var(--color-text);
+}
+
+.settings-input[type="number"] {
+  width: 48px;
+}
+
+.btn-icon {
+  background: #eef0ff;
+  border: 1px solid #d6dbff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 9px;
+  color: var(--color-primary);
+  white-space: nowrap;
+}
+
+.btn-icon:hover {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.btn-icon.btn-danger {
+  background: #fee2e2;
+  border-color: #fecaca;
+  color: #b91c1c;
+}
+
+.btn-icon.btn-danger:hover {
+  background: #b91c1c;
+  color: white;
+  border-color: #b91c1c;
+}
+
+.main-layout {
+  display: flex;
+  flex-direction: column; /* Standard (schmales Panel): Listen- und Status-Bereich untereinander */
+  flex: 1;
+  overflow: hidden;
+}
+
+body.modal-mode .main-layout {
+  flex-direction: row; /* Ausgeklappte Modal-Ansicht: nebeneinander, mehr Platz */
+}
+
+.list-panel {
+  flex: 1.4;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--color-border);
+  overflow: hidden;
+  min-height: 0;
+}
+
+body.modal-mode .list-panel {
+  border-bottom: none;
+  border-right: 1px solid var(--color-border);
+}
+
+.status-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* Im schmalen Panel nimmt die Gliederung den Großteil der Höhe ein,
+   der Status-Bereich wird kompakt und scrollbar gehalten */
+body:not(.modal-mode) .list-panel {
+  flex: 2;
+}
+body:not(.modal-mode) .status-panel {
+  flex: 1;
+  max-height: 220px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #fff;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.panel-header h2 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.tree-container, .status-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.hint {
+  color: var(--color-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+/* --- Baum-Knoten --- */
+.node {
+  margin-bottom: 4px;
+}
+
+.node-row {
+  display: flex;
+  align-items: flex-start; /* Dot/Code an erster Zeile ausrichten, nicht vertikal zentriert,
+                               da der Titel jetzt mehrzeilig wachsen kann */
+  gap: 6px;
+  padding: 7px 6px;
+  border-radius: 6px;
+  background: white;
+  border: 1px solid var(--color-border);
+}
+
+.node-row:hover {
+  border-color: var(--color-primary);
+}
+
+.node-color-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px; /* leichter Versatz, damit der Punkt optisch mit der ersten Textzeile fluchtet */
+}
+
+.node-id {
+  font-weight: 700;
+  color: var(--color-muted);
+  font-size: 11px;
+  min-width: 38px;
+  padding-top: 3px;
+}
+
+.node-title {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  font-family: inherit;
+  padding: 3px 4px;
+  border-radius: 4px;
+  background: transparent;
+  resize: none;       /* kein manuelles Vergrößern-Handle, Höhe wird automatisch per JS gesetzt */
+  overflow: hidden;    /* kein interner Scrollbalken, da die Höhe immer an den Inhalt angepasst wird */
+  line-height: 1.4;
+  min-height: 20px;
+}
+
+.node-title:focus {
+  background: #f0f2ff;
+}
+
+.node-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+  padding-left: 4px;
+}
+
+.node-children {
+  margin-left: 22px;
+  padding-left: 10px;
+  border-left: 1px dashed var(--color-border);
+}
+
+.node-status {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.status-new { background: #d1fae5; color: #047857; }
+.status-synced { background: #e0e7ff; color: #4338ca; }
+.status-modified { background: #fef3c7; color: #b45309; }
+
+/* --- Diff-Anzeige rechts --- */
+.diff-group {
+  margin-bottom: 14px;
+}
+
+.diff-group h3 {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin: 0 0 6px 0;
+}
+
+.diff-item {
+  font-size: 12px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  margin-bottom: 3px;
+}
+
+.diff-item.add { background: #d1fae5; color: #047857; }
+.diff-item.update { background: #fef3c7; color: #b45309; }
+.diff-item.remove { background: #fee2e2; color: #b91c1c; }
+.diff-item.none { color: var(--color-muted); }
+
+/* --- Eigenes Dialog-Overlay (Ersatz für native alert/confirm/prompt) --- */
+.dialog-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.dialog-overlay.visible {
+  display: flex;
+}
+
+.dialog-box {
+  background: white;
+  border-radius: 10px;
+  padding: 18px;
+  max-width: 360px;
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.dialog-message {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  white-space: pre-wrap;
+}
+
+.dialog-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dialog-choice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.dialog-choice-item {
+  text-align: left;
+  background: #f3f4f8;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.dialog-choice-item:hover {
+  background: #eef0ff;
+  border-color: var(--color-primary);
+}
